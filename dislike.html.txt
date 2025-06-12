@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Screen Filler</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden; /* Hide scrollbars if content slightly overflows */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-content: center;
+            height: 100vh; /* Make body fill the viewport height */
+            background-color: #000; /* Optional: sets a black background if emojis don't perfectly cover */
+        }
+
+        .emoji {
+            font-size: 8vw; /* Adjust emoji size to fill screen, relative to viewport width */
+            line-height: 1; /* Prevent extra space between lines */
+            user-select: none; /* Prevent text selection */
+            -webkit-user-select: none; /* For Safari */
+            -moz-user-select: none; /* For Firefox */
+            -ms-user-select: none; /* For IE/Edge */
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const emoji = "👎🏿";
+        const body = document.body;
+
+        // Function to fill the screen with emojis
+        function fillScreenWithEmojis() {
+            body.innerHTML = ''; // Clear existing emojis
+            const bodyWidth = body.clientWidth;
+            const bodyHeight = body.clientHeight;
+
+            // Estimate how many emojis fit based on font-size in CSS (8vw)
+            // This is an approximation; actual sizing can vary slightly
+            const estimatedEmojiWidth = (8 / 100) * window.innerWidth;
+            const estimatedEmojiHeight = estimatedEmojiWidth * 1.2; // Emojis are often taller than wide
+
+            const numCols = Math.ceil(bodyWidth / estimatedEmojiWidth);
+            const numRows = Math.ceil(bodyHeight / estimatedEmojiHeight);
+
+            for (let i = 0; i < numRows; i++) {
+                for (let j = 0; j < numCols; j++) {
+                    const span = document.createElement('span');
+                    span.classList.add('emoji');
+                    span.textContent = emoji;
+                    body.appendChild(span);
+                }
+            }
+        }
+
+        // Call the function on page load
+        fillScreenWithEmojis();
+
+        // Recalculate and refill on window resize to ensure full coverage
+        window.addEventListener('resize', fillScreenWithEmojis);
+    </script>
+</body>
+</html>
